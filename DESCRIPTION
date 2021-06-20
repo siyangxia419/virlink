@@ -7,6 +7,7 @@ Author: Siyang Xia
 Maintainer: Siyang Xia <sxia@hsph.harvard.edu>
 Description: Functions for examining antibody cross-reactivity in VirScan data
     Contains functions to perform peptide pairwise alignment, kmer generation
-License: What license is it under?
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 7.1.1
