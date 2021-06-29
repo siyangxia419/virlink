@@ -8,7 +8,7 @@ Maintainer: Siyang Xia <sxia@hsph.harvard.edu>
 Description: Functions for examining antibody cross-reactivity in VirScan data.
     Contains functions to perform peptide pairwise alignment, kmer generation.
 Depends:
-    R
+    R (>= 3.5.0)
 Imports:    
     tidyverse
 Suggests:
