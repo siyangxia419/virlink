@@ -22,7 +22,7 @@ given a sequence, return all kmers tiled along the sequence
 \examples{
 km <- get_kmers(sequence = "MRSLLFVVGAWVAALVTNLTPDAALASGTTTTAAAGNTSATASPGDNATSIDAGST",
                 kmer_length = 12,
-                overlap = 3)
+                overlap = 6)
 print(km)
 
 }
