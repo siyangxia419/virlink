@@ -10,8 +10,7 @@ Description: Functions for examining antibody cross-reactivity in VirScan data.
 Depends:
     R
 Imports:    
-    dplyr,
-    tidyr
+    tidyverse
 Suggests:
     knitr,
     devtools,
