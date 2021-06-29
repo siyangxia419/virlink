@@ -1,16 +1,24 @@
 Package: virlink
 Type: Package
 Title: VirScan cross-reactivity analyssi
-Version: 0.1.1
-Date: 2021-06-28
-Author: Siyang Xia
+Version: 0.1.2
+Date: 2021-06-29
+Author: Jennifer L. Remmel, Siyang Xia
 Maintainer: Siyang Xia <sxia@hsph.harvard.edu>
 Description: Functions for examining antibody cross-reactivity in VirScan data.
-    Contains functions to perform peptide pairwise alignment, kmer generation.
+    Contains functions to perform peptide pairwise alignment, kmer generation etc.
 Depends:
     R (>= 3.5.0)
 Imports:    
-    tidyverse
+    tidyverse,
+    data.table,
+    tibble,
+    dplyr,
+    tidyr,
+    stringr,
+    Biostrings,
+    parallel,
+    multidplyr
 Suggests:
     knitr,
     devtools,
