@@ -15,7 +15,7 @@
 #' @examples
 #' km <- get_kmers(sequence = "MRSLLFVVGAWVAALVTNLTPDAALASGTTTTAAAGNTSATASPGDNATSIDAGST",
 #'                 kmer_length = 12,
-#'                 overlap = 3)
+#'                 overlap = 6)
 #' print(km)
 #'
 #' @export
@@ -24,13 +24,14 @@
 get_kmers <- function(sequence, kmer_length = 12, overlap = 6){
 
   # determine start indices
-  starts <- seq(from = 1, to = nchar(sequence), by = kmer_length - overlap)
+  starts <- seq(from = 1, to = nchar(sequence), by = (kmer_length - overlap))
 
   # determine end indices
   ends <- starts + kmer_length - 1
 
   # slice sequence by start/end indices
-  scratch <- tibble::tibble(sequence = sequence, starts = starts, ends = ends) %>%
+  scratch <- tibble::tibble(starts = starts, ends = ends) %>%
+    dplyr::rowwise() %>%
     dplyr::mutate(kmers = substr(x = sequence, start = starts, stop = ends)) %>%
     dplyr::filter(nchar(kmers) >= overlap) # remove sequences shorter than the overlap length
 
