@@ -2,5 +2,6 @@
 
 export(get_kmers)
 export(make_kmer_dataframe)
+import(tidyverse)
 import(dplyr)
 import(tidyr)
