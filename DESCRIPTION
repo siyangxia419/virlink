@@ -1,8 +1,8 @@
 Package: virlink
 Type: Package
 Title: VirScan cross-reactivity analyssi
-Version: 0.1.2
-Date: 2021-06-29
+Version: 0.1.4
+Date: 2021-07-01
 Author: Jennifer L. Remmel, Siyang Xia
 Maintainer: Siyang Xia <sxia@hsph.harvard.edu>
 Description: Functions for examining antibody cross-reactivity in VirScan data.
@@ -16,6 +16,7 @@ Imports:
     dplyr,
     tidyr,
     stringr,
+    readr,
     Biostrings,
     parallel,
     multidplyr
