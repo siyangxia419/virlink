@@ -19,7 +19,6 @@
 #'
 #' @export
 #' @import dplyr
-#' @import tidyr
 #'
 make_kmer_dataframe <- function(peptides, kmer_length = 12, overlap = 6){
 
