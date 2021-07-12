@@ -24,7 +24,6 @@
 #' @export
 #' @import tibble
 #' @import dplyr
-#' @import readr
 #'
 peptide_pairwise_cooccurrence <- function(d,
                                           test_method = "fisher",
