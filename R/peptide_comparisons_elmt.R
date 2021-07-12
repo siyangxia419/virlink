@@ -28,14 +28,8 @@
 #' head(pairwise_align1)
 #' head(pairwise_align2)
 #'
-#' @export
 #' @import tibble
 #' @import dplyr
-#' @import tidyr
-#' @import stringr
-#' @import Biostrings
-#' @import parallel
-#' @import multidplyr
 #'
 peptide_comparisons_elmt <- function(peptides,
                                      sub_matrix      = "BLOSUM50",
@@ -117,8 +111,8 @@ peptide_comparisons_elmt <- function(peptides,
 
     # prepare for parallel computing
     cl <- parallel::detectCores()  # number of clusters available
-    if(parallel_ncore > cl){
-      parallel_ncore <- cl
+    if(parallel_ncore > (cl - 1)){
+      parallel_ncore <- cl - 1
       print("Required number of cores exceed available cores. Too greedy!")
     }
 
