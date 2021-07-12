@@ -29,9 +29,6 @@
 #'
 #' @export
 #' @import data.table
-#' @import stringr
-#' @import Biostrings
-#' @import parallel
 #' @import tibble
 #'
 peptide_comparisons_vctz <- function(peptides,
