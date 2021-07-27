@@ -1,8 +1,8 @@
 Package: virlink
 Type: Package
 Title: VirScan cross-reactivity and co-occurrence analysis
-Version: 0.1.5
-Date: 2021-07-12
+Version: 0.1.6
+Date: 2021-07-26
 Author: Siyang Xia, Jennifer L. Remmel
 Maintainer: Siyang Xia <sxia@hsph.harvard.edu>
 Description: Functions for examining antibody cross-reactivity in VirScan data.
@@ -23,8 +23,9 @@ Suggests:
     knitr,
     devtools,
     roxygen2,
-    testthat
+    testthat (>= 3.0.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
+Config/testthat/edition: 3
