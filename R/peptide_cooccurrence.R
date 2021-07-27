@@ -30,8 +30,8 @@
 #' @export
 #'
 peptide_cooccurrence <- function(x1, x2,
-                                test_method = "fisher",
-                                correlation = TRUE){
+                                 test_method = "fisher",
+                                 correlation = TRUE){
 
   v <- c(TT = sum(x1 & x2),
          TF = sum(x1 & (!x2)),
@@ -41,10 +41,10 @@ peptide_cooccurrence <- function(x1, x2,
   # Test of association
   if(test_method == "chisq"){         # Chi-square test
     suppressWarnings(chi_t <- chisq.test(matrix(v, nrow = 2)))
-    v <- c(v, chi_t$statistic, p = chi_t$p.value)
+    v <- c(v, xsq = ifelse(is.null(chi_t$statistic), NA, chi_t$statistic), p = chi_t$p.value)
   }else if(test_method == "fisher"){  # Fisher's exact test
     suppressWarnings(fisher_t <- fisher.test(matrix(v, nrow = 2)))
-    v <- c(v, fisher_t$statistic, p = fisher_t$p.value)
+    v <- c(v, oddsr = ifelse(is.null(fisher_t$estimate), NA, fisher_t$estimate), p = fisher_t$p.value)
   }
 
   # Phi coefficient: calculated by Pearson correlation, equals to sqrt(chi-square / n)
