@@ -59,8 +59,8 @@ peptide_comparisons_vctz <- function(peptides,
   # 2. Prepare the data.table -----------------------------------------------
 
   # convert the data frame to data table
-  p <- data.table::setDT(copy(peptides), key = "id")
-  key(p)
+  p <- data.table::setDT(data.table::copy(peptides), key = "id")
+  data.table::key(p)
 
   # columns to keep in the final results
   if(other_info){
@@ -70,9 +70,9 @@ peptide_comparisons_vctz <- function(peptides,
   }
 
   # copy the dataset for pattern and subject
-  p1 <- data.table::copy(p[, ..keeped_name])
+  p1 <- data.table::copy(p[, keeped_name, with = FALSE])
   data.table::setnames(p1, names(p1), paste0("subject_", names(p1)))
-  p2 <- data.table::copy(p[, ..keeped_name])
+  p2 <- data.table::copy(p[, keeped_name, with = FALSE])
   data.table::setnames(p2, names(p2), paste0("pattern_", names(p2)))
 
   # convert peptide sequence to AAString
