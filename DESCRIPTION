@@ -1,8 +1,8 @@
 Package: virlink
 Type: Package
 Title: VirScan cross-reactivity and co-occurrence analysis
-Version: 0.1.6
-Date: 2021-07-26
+Version: 0.1.7
+Date: 2021-08-03
 Author: Siyang Xia, Jennifer L. Remmel
 Maintainer: Siyang Xia <sxia@hsph.harvard.edu>
 Description: Functions for examining antibody cross-reactivity in VirScan data.
@@ -18,12 +18,14 @@ Imports:
     readr,
     Biostrings,
     parallel,
-    multidplyr
+    multidplyr,
+    Rcpp
 Suggests:
     knitr,
     devtools,
     roxygen2,
     testthat (>= 3.0.0)
+LinkingTo: Rcpp
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
