@@ -18,29 +18,29 @@
 #' @return a data frame/data table/tibble with sequence alignment results from all unique pairs of peptides
 #'
 #' @author Jennifer L. Remmel, Siyang Xia \email{sxia@@hsph.harvard.edu}
-#' @seealso \code{\link{peptide_comparisons_elmt}}
+#' @seealso \code{\link[Biostrings]{pairwiseAlignment}}
 #' @references pairwiseAlignment: \url{https://bioconductor.org/packages/devel/bioc/vignettes/Biostrings/inst/doc/PairwiseAlignments.pdf}
 #' @keywords peptide alignment
 #'
 #' @examples
 #' data(peptide_df)
-#' pairwise_align <- peptide_comparisons_vctz(peptides = peptide_df)
+#' pairwise_align <- peptide_pairwise_alignment(peptides = peptide_df)
 #' head(pairwise_align)
 #'
 #' @export
 #' @import data.table
 #' @import tibble
 #'
-peptide_comparisons_vctz <- function(peptides,
-                                     sub_matrix      = "BLOSUM50",
-                                     gap_opening     = 10,
-                                     gap_extension   = 4,
-                                     align_type      = "local",
-                                     self_comparison = TRUE,
-                                     full_align      = FALSE,
-                                     other_info      = TRUE,
-                                     parallel_ncore  = NULL,
-                                     output_str      = "data.table"){
+peptide_pairwise_alignment <- function(peptides,
+                                       sub_matrix      = "BLOSUM50",
+                                       gap_opening     = 10,
+                                       gap_extension   = 4,
+                                       align_type      = "local",
+                                       self_comparison = TRUE,
+                                       full_align      = FALSE,
+                                       other_info      = TRUE,
+                                       parallel_ncore  = NULL,
+                                       output_str      = "data.table"){
 
 
   # 1. Set the number of cores used by data.table if specified by us --------
