@@ -4,40 +4,75 @@
 \alias{peptide_cooccurrence}
 \title{Summarize the co-occurrence of two peptides}
 \usage{
-peptide_cooccurrence(x1, x2, test_method = "fisher", correlation = TRUE)
+peptide_cooccurrence(
+  x,
+  y,
+  coefficient = "phi",
+  perform_test = FALSE,
+  test_method = "fisher"
+)
 }
 \arguments{
-\item{x1}{a logical vector of peptide 1's presence in multiple samples}
+\item{x}{a logical vector of peptide 1's presence in multiple samples}
 
-\item{x2}{a logical vector of peptide 2's presence in multiple samples}
+\item{y}{a logical vector of peptide 2's presence in multiple samples}
 
-\item{test_method}{method to perform statistical test, options: "fisher" or "chisq" or "none"}
+\item{coefficient}{the cooccurrence coefficient to compute.
+Options: "phi" (phi correlation coefficient), "prop" (mean proportion of
+both peptide being enriched given one of them is enriched), "both"
+(both "phi" and "prop").
+Default: "phi"}
 
-\item{correlation}{whether phi correlation is calculated}
+\item{perform_test}{a logical indicator of whether statistical tests
+should be performed for each comparison.
+The test method is specified by \code{test_method}.
+Default: \code{FALSE}}
+
+\item{test_method}{method to perform statistical test.
+Options: "fisher" (Fisher's exact test) or "chisq" (Pearson's Chi-squared test).
+Default: "fisher"}
 }
 \value{
-a vector that contains 4-7 elements (depending on whether to perform test and correlation):
-  TT: frequency of both peptide positive
-  TF: frequency of peptide 1 positive and peptide 2 negative
-  FT: frequency of peptide 1 genative and peptide 2 position
-  FF: frequency of both peptide negative
-  stat: key statistics from the selected test (odds ratio for Fisher's exact test and chi-squared for chi-squared test)
-  p: p value from the selected test
-  phi: phi correlation coefficient (calculated by Pearson correlation)
+if \code{coefficient} = "phi" and \code{perform_test} = \code{FALSE},
+    return a single number, i.e., the phi coefficient. Otherwise, return
+    a vector that contains at least these four elements:
+    TT: frequency of both peptide positive;
+    TF: frequency of peptide 1 positive and peptide 2 negative;
+    FT: frequency of peptide 1 genative and peptide 2 position;
+    FF: frequency of both peptide negative.
+    Depending on \code{coefficient}, the vector also contains phi coefficient
+    and/or the mean proportion of cooccurrence. If \code{perform_test} is
+    \code{TRUE}, the vector also contains the key statistic ("oddsr" - odds ratio,
+    if using the Fisher's exact test, or "xsq" - chi-squared, if using the Chi-squared
+    test), and the p-value.
 }
 \description{
-calculate a contingency table of two peptides' presence in multiple individuals and
-perform independency test and phi correlation coefficient
+calculate a contingency table of two peptides' presence in multiple individuals
+and perform independency test and cooccurrence coefficients
 }
 \examples{
 data(peptide_z)
 peptide_bi <- as.data.frame((peptide_z > 3.5) * 1)
-cooccur <- peptide_cooccurrence(x1 = peptide_bi[, 1], x2 = peptide_bi[, 2])
-print(cooccur)
+peptide_cooccurrence(x = peptide_bi[, 1], y = peptide_bi[, 2],
+                     coefficient = "both",
+                     perform_test = TRUE,
+                     test_method = "fisher")
+peptide_cooccurrence(x = peptide_bi[, 1], y = peptide_bi[, 2],
+                     coefficient = "phi",
+                     perform_test = TRUE,
+                     test_method = "chisq")
+peptide_cooccurrence(x = peptide_bi[, 1], y = peptide_bi[, 2],
+                     coefficient = "prop",
+                     perform_test = FALSE)
+peptide_cooccurrence(x = peptide_bi[, 1], y = peptide_bi[, 2],
+                     coefficient = "phi",
+                     perform_test = FALSE)
 
 }
 \seealso{
-\code{\link{peptide_pairwise_coocurrence}}
+\code{\link{peptide_pairwise_correlation}},
+    \code{\link[stats]{fisher.test}},
+    \code{\link[stats]{chisq.test}}
 }
 \author{
 Siyang Xia \email{sxia@hsph.harvard.edu}
