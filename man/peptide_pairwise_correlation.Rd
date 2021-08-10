@@ -20,56 +20,56 @@ peptide_pairwise_correlation(
 )
 }
 \arguments{
-\item{d}{a data frame or tibble containing z-scores or binary indicator of
+\item{d}{a data frame or tibble containing z-scores or binary indicator of 
 peptide enrichment. Columns represent peptides and rows represent samples.
 Column names are peptide ids and row names are sample ids.}
 
-\item{analysis_type}{type of analysis to perform.
-Options: "correlation" or "cooccurrence".
+\item{analysis_type}{type of analysis to perform. 
+Options: "correlation" or "cooccurrence". 
 If select "correlation", correlation will be calculated on the z-scores, and
-\code{cor_method} will be used.
+\code{cor_method} will be used. 
 If select "cooccurrence", z-score will be converted to a binary indicator
-of enrichment (1/0), and \code{occ_method} and \code{occ_test} will be used.
+of enrichment (1/0), and \code{occ_method} and \code{occ_test} will be used. 
 Default: \code{correlation}}
 
 \item{perform_test}{a logical indicator of whether statistical tests
-should be performed for each comparison.
-The test method is specified by \code{cor_method} and \code{occ_method},
-depending on \code{analysis_type}.
+should be performed for each comparison. 
+The test method is specified by \code{cor_method} and \code{occ_method}, 
+depending on \code{analysis_type}. 
 Default: \code{FALSE}}
 
-\item{cor_method}{correlation coefficient and test to be computed.
+\item{cor_method}{correlation coefficient and test to be computed. 
 Pass to \code{\link[stats]{cor}} and \code{\link[stats]{cor.test}}
-Options: "pearson", "spearman", "kendall".
+Options: "pearson", "spearman", "kendall". 
 Default: "pearson"}
 
-\item{occ_method}{cooccurrence coefficient to be computed.
-Pass to \code{\link{peptide_cooccurrence}}.
-Options: "phi", "prop", "both".
+\item{occ_method}{cooccurrence coefficient to be computed. 
+Pass to \code{\link{peptide_cooccurrence}}. 
+Options: "phi", "prop", "both". 
 Default: "phi"}
 
-\item{occ_test}{cooccurrence tests to be computed.
-Pass to \code{\link{peptide_cooccurrence}}.
-Options: "fisher" (Fisher's exact test) or "chisq" (Pearson's Chi-squared test).
+\item{occ_test}{cooccurrence tests to be computed. 
+Pass to \code{\link{peptide_cooccurrence}}. 
+Options: "fisher" (Fisher's exact test) or "chisq" (Pearson's Chi-squared test). 
 Default: "fisher"}
 
-\item{p_adjust_method}{method to adjust p values for multiple comparison.
-Pass to \code{\link[stats]{p.adjust}}.
-options: "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none".
+\item{p_adjust_method}{method to adjust p values for multiple comparison. 
+Pass to \code{\link[stats]{p.adjust}}. 
+options: "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none". 
 Default: "holm"}
 
-\item{z_threshold}{the z-score threshold above which the epitope is considered as enriched.
+\item{z_threshold}{the z-score threshold above which the epitope is considered as enriched. 
 Default: 5}
 
 \item{temporal_samples}{a logical indicator of whether there are multiple
 temporal samples from each individual. If \code{TRUE}, an additional data frame
-\code{si} is needed to indicate the attribution of samples to individuals.
+\code{si} is needed to indicate the attribution of samples to individuals. 
 To account for the temporal structure, z-score difference between each two consecutive
-temporal points will be calculated and used for the correlation analysis.
-Although the function tolerates cooccurrence analysis with temporal samples,
-it is not preferred as changes of binary status are less informative.
+temporal points will be calculated and used for the correlation analysis. 
+Although the function tolerates cooccurrence analysis with temporal samples, 
+it is not preferred as changes of binary status are less informative. 
 To perform cooccurrence analysis, only the change from 0 to 1 between two time points
-is considered as 1 in the difference data.
+is considered as 1 in the difference data. 
 Default: \code{FALSE}}
 
 \item{si}{a data frame or tibble indicating the temporal structure of the samples.
@@ -77,16 +77,16 @@ The first column of \code{si} is the sample id, which should match the row names
 The second column of \code{si} is the individual id.
 All other columns will be ignored.}
 
-\item{output_str}{format of the output to return.
-Options: "data.table", "data.frame", and "tibble".
+\item{output_str}{format of the output to return. 
+Options: "data.table", "data.frame", and "tibble". 
 Default: "data.table"}
 
 \item{mc}{number of cores to use for multi-thread parallel analysis. Pass to
-\code{\link[parallel]{mclapply}}.
+\code{\link[parallel]mclapply}.
 Deafult: 1}
 }
 \value{
-a data frame/data table/tibble that contains correlation or co-occurence
+a data frame/data table/tibble that contains correlation or co-occurence 
     analysis results of all pairs of peptides
 }
 \description{
@@ -95,7 +95,7 @@ perform correlation or co-occurrence analysis across all pairs of peptides.
 }
 \examples{
 data(peptide_z)
-sample_info <- data.frame(id = row.names(peptide_z),
+sample_info <- data.frame(id = row.names(peptide_z), 
                           individual = rep(c("ind1", "ind2"), each = 6))
 
 ### 1. correlation analysis with default setting
@@ -103,34 +103,34 @@ output1 <- peptide_pairwise_correlation(d = peptide_z)
 head(output1)
 
 ### 2. correlation with statistical tests
-output2 <- peptide_pairwise_correlation(d = peptide_z,
+output2 <- peptide_pairwise_correlation(d = peptide_z, 
                                         si = sample_info,
-                                        analysis_type = "correlation",
-                                        perform_test = TRUE,
+                                        analysis_type = "correlation", 
+                                        perform_test = TRUE, 
                                         cor_method = "pearson")
 head(output2)
 
 ### 3. correlation with temporal samples
-output3 <- peptide_pairwise_correlation(d = peptide_z,
+output3 <- peptide_pairwise_correlation(d = peptide_z, 
                                         si = sample_info,
-                                        analysis_type = "correlation",
-                                        perform_test = TRUE,
-                                        cor_method = "pearson",
+                                        analysis_type = "correlation", 
+                                        perform_test = TRUE, 
+                                        cor_method = "pearson", 
                                         temporal_samples = TRUE)
 head(output3)
 
 ### 4. cooccurrence analysis with both coefficients
-output4 <- peptide_pairwise_correlation(d = peptide_z,
+output4 <- peptide_pairwise_correlation(d = peptide_z, 
                                         si = sample_info,
-                                        analysis_type = "cooccurrence",
-                                        z_threshold = 5,
+                                        analysis_type = "cooccurrence", 
+                                        z_threshold = 5, 
                                         perform_test = FALSE,
                                         occ_method = "both",
                                         temporal_samples = FALSE)
 head(output4)
 
 ### 5. cooccurrence analysis with both coefficients and fisher's exact test
-output5 <- peptide_pairwise_correlation(d = peptide_z,
+output5 <- peptide_pairwise_correlation(d = peptide_z, 
                                         si = sample_info,
                                         analysis_type = "cooccurrence",
                                         z_threshold = 10,
@@ -141,19 +141,19 @@ output5 <- peptide_pairwise_correlation(d = peptide_z,
 head(output5)
 
 ### 6. cooccurrence analysis with only phi coefficient and return as a tibble
-output6 <- peptide_pairwise_correlation(d = peptide_z,
+output6 <- peptide_pairwise_correlation(d = peptide_z, 
                                         si = sample_info,
                                         analysis_type = "cooccurrence",
                                         z_threshold = 5,
                                         perform_test = FALSE,
                                         occ_method = "phi",
-                                        temporal_samples = FALSE,
+                                        temporal_samples = FALSE, 
                                         output_str = "tibble")
 head(output6)
 
 }
 \seealso{
-\code{\link{peptide_cooccurrence}}, \code{\link{to_pairwise}}
+\code{\link{peptide_coocurrence}}, \code{\link{to_pairwise}}
 }
 \author{
 Siyang Xia \email{sxia@hsph.harvard.edu}
