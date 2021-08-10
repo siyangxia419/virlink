@@ -17,14 +17,12 @@ Imports:
     stringr,
     readr,
     Biostrings,
-    parallel,
-    Rcpp
+    parallel
 Suggests:
     knitr,
     devtools,
     roxygen2,
     testthat (>= 3.0.0)
-LinkingTo: Rcpp
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
