@@ -245,7 +245,7 @@ peptide_pairwise_correlation <- function(d,
     # convert the original data and the sample information (si) to data tables
     d_t <- data.table::setDT(data.table::copy(d), keep.rownames = "id")
     s_i <- data.table::setDT(data.table::copy(si[, 1:2]))
-    data.table::setnames(s_i, new = c("id", "individual"))
+    data.table::setnames(s_i, old = colnames(s_i)[1:2], new = c("id", "individual"))
 
     # combine them
     d_t <- d_t[s_i, on = "id"]
