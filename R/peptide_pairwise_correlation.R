@@ -24,8 +24,8 @@
 #'     Default: "pearson"
 #' @param occ_method cooccurrence coefficient to be computed.
 #'     Pass to \code{\link{peptide_cooccurrence}}.
-#'     Options: "phi", "prop", "both".
-#'     Default: "phi"
+#'     Options: "jaccard", "phi", "prop", or any combination of them in a vector.
+#'     Default: "jaccard"
 #' @param occ_test cooccurrence tests to be computed.
 #'     Pass to \code{\link{peptide_cooccurrence}}.
 #'     Options: "fisher" (Fisher's exact test) or "chisq" (Pearson's Chi-squared test).
@@ -90,23 +90,23 @@
 #'                                         temporal_samples = TRUE)
 #' head(output3)
 #'
-#' ### 4. cooccurrence analysis with both coefficients
+#' ### 4. cooccurrence analysis with all three coefficients
 #' output4 <- peptide_pairwise_correlation(d = peptide_z,
 #'                                         si = sample_info,
 #'                                         analysis_type = "cooccurrence",
 #'                                         z_threshold = 5,
 #'                                         perform_test = FALSE,
-#'                                         occ_method = "both",
+#'                                         occ_method = c("jaccard", "phi", "prop"),
 #'                                         temporal_samples = FALSE)
 #' head(output4)
 #'
-#' ### 5. cooccurrence analysis with both coefficients and fisher's exact test
+#' ### 5. cooccurrence analysis with two coefficients and fisher's exact test
 #' output5 <- peptide_pairwise_correlation(d = peptide_z,
 #'                                         si = sample_info,
 #'                                         analysis_type = "cooccurrence",
 #'                                         z_threshold = 10,
 #'                                         perform_test = TRUE,
-#'                                         occ_method = "both",
+#'                                         occ_method = c("jaccard", "phi"),
 #'                                         occ_test = "fisher",
 #'                                         temporal_samples = FALSE)
 #' head(output5)
@@ -129,7 +129,7 @@ peptide_pairwise_correlation <- function(d,
                                          analysis_type    = "correlation", # option: "correlation", "cooccurrence"
                                          perform_test     = FALSE,
                                          cor_method       = "pearson",     # option: "pearson", "spearman"
-                                         occ_method       = "phi",         # option: "phi", "prop", "both"
+                                         occ_method       = "jaccard",     # option: "jaccard", "phi", "prop", or combination of them
                                          occ_test         = "fisher",      # option: "fisher", "chisq"
                                          p_adjust_method  = "holm",
                                          z_threshold      = 5,
@@ -160,14 +160,18 @@ peptide_pairwise_correlation <- function(d,
   }else if(analysis_type == "cooccurrence"){
     message("Co-occurrence (binary) analysis between each pair of epitopes.")
 
-    if(occ_method == "phi"){
-      message("Cooccurrence coefficient: phi correlation")
-    }else if(occ_method == "prop"){
-      message("Cooccurrence coefficient: mean proportion of co-occurrence given one peptide is present")
-    }else if(occ_method == "both"){
-      message("Cooccurrence coefficient: both phi and mean proportion")
+    if(all(occ_method %in% c("jaccard", "phi", "prop"))){
+      if("jaccard" %in% occ_method){
+        message("Cooccurrence coefficient: jaccard index")
+      }
+      if("phi" %in% occ_method){
+        message("Cooccurrence coefficient: phi correlation coefficient")
+      }
+      if("prop" %in% occ_method){
+        message("Cooccurrence coefficient: mean proportion of co-occurrence given one peptide is present")
+      }
     }else{
-      stop('Invalid cooccurrence coefficient. Please select from "phi", "prop", "both".')
+      stop('Invalid cooccurrence coefficient. Please select from "jaccard", "phi", "prop", or their combination as a vector.')
     }
 
     if(perform_test){
@@ -176,7 +180,7 @@ peptide_pairwise_correlation <- function(d,
       }else if(occ_test == "chisq"){
         message("Perform statistical test: Chi-squared test")
       }else{
-        stop('Invalid cooccurrence test method Please select from "fisher", "chisq", "both".')
+        stop('Invalid cooccurrence test method Please select from "fisher" or "chisq".')
       }
     }
 
