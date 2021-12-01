@@ -9,7 +9,7 @@ peptide_pairwise_correlation(
   analysis_type = "correlation",
   perform_test = FALSE,
   cor_method = "pearson",
-  occ_method = "phi",
+  occ_method = "jaccard",
   occ_test = "fisher",
   p_adjust_method = "holm",
   z_threshold = 5,
@@ -45,8 +45,8 @@ Default: "pearson"}
 
 \item{occ_method}{cooccurrence coefficient to be computed.
 Pass to \code{\link{peptide_cooccurrence}}.
-Options: "phi", "prop", "both".
-Default: "phi"}
+Options: "jaccard", "phi", "prop", or any combination of them in a vector.
+Default: "jaccard"}
 
 \item{occ_test}{cooccurrence tests to be computed.
 Pass to \code{\link{peptide_cooccurrence}}.
@@ -119,23 +119,23 @@ output3 <- peptide_pairwise_correlation(d = peptide_z,
                                         temporal_samples = TRUE)
 head(output3)
 
-### 4. cooccurrence analysis with both coefficients
+### 4. cooccurrence analysis with all three coefficients
 output4 <- peptide_pairwise_correlation(d = peptide_z,
                                         si = sample_info,
                                         analysis_type = "cooccurrence",
                                         z_threshold = 5,
                                         perform_test = FALSE,
-                                        occ_method = "both",
+                                        occ_method = c("jaccard", "phi", "prop"),
                                         temporal_samples = FALSE)
 head(output4)
 
-### 5. cooccurrence analysis with both coefficients and fisher's exact test
+### 5. cooccurrence analysis with two coefficients and fisher's exact test
 output5 <- peptide_pairwise_correlation(d = peptide_z,
                                         si = sample_info,
                                         analysis_type = "cooccurrence",
                                         z_threshold = 10,
                                         perform_test = TRUE,
-                                        occ_method = "both",
+                                        occ_method = c("jaccard", "phi"),
                                         occ_test = "fisher",
                                         temporal_samples = FALSE)
 head(output5)
