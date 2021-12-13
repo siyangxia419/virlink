@@ -11,8 +11,8 @@ peptide_pairwise_correlation(
   cor_method = "pearson",
   occ_method = "jaccard",
   occ_test = "fisher",
-  p_adjust_method = "holm",
-  z_threshold = 5,
+  p_adjust_method = "fdr",
+  hit_threshold = 1,
   temporal_samples = FALSE,
   si = NULL,
   output_str = "data.table",
@@ -56,10 +56,10 @@ Default: "fisher"}
 \item{p_adjust_method}{method to adjust p values for multiple comparison.
 Pass to \code{\link[stats]{p.adjust}}.
 options: "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none".
-Default: "holm"}
+Default: "fdr"}
 
-\item{z_threshold}{the z-score threshold above which the epitope is considered as enriched.
-Default: 5}
+\item{hit_threshold}{the antibody reactivity threshold above which the epitope is considered as enriched.
+Default: 1}
 
 \item{temporal_samples}{a logical indicator of whether there are multiple
 temporal samples from each individual. If \code{TRUE}, an additional data frame
@@ -123,7 +123,7 @@ head(output3)
 output4 <- peptide_pairwise_correlation(d = peptide_z,
                                         si = sample_info,
                                         analysis_type = "cooccurrence",
-                                        z_threshold = 5,
+                                        hit_threshold = 5,
                                         perform_test = FALSE,
                                         occ_method = c("jaccard", "phi", "prop"),
                                         temporal_samples = FALSE)
@@ -133,7 +133,7 @@ head(output4)
 output5 <- peptide_pairwise_correlation(d = peptide_z,
                                         si = sample_info,
                                         analysis_type = "cooccurrence",
-                                        z_threshold = 10,
+                                        hit_threshold = 10,
                                         perform_test = TRUE,
                                         occ_method = c("jaccard", "phi"),
                                         occ_test = "fisher",
@@ -144,7 +144,7 @@ head(output5)
 output6 <- peptide_pairwise_correlation(d = peptide_z,
                                         si = sample_info,
                                         analysis_type = "cooccurrence",
-                                        z_threshold = 5,
+                                        hit_threshold = 5,
                                         perform_test = FALSE,
                                         occ_method = "phi",
                                         temporal_samples = FALSE,

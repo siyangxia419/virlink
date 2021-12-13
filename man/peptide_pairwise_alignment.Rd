@@ -6,7 +6,9 @@
 \usage{
 peptide_pairwise_alignment(
   peptides,
-  sub_matrix = "BLOSUM50",
+  id_col = "id",
+  seq_col = "pep_aa",
+  sub_matrix = "BLOSUM62",
   gap_opening = 10,
   gap_extension = 4,
   align_type = "local",
@@ -18,29 +20,49 @@ peptide_pairwise_alignment(
 )
 }
 \arguments{
-\item{peptides}{a tibble of peptides with two columns named "id" and "pep_aa"}
+\item{peptides}{a tibble of peptide metadata with at least two columns:
+peptide id and peptide amino acid sequences.}
 
-\item{sub_matrix}{substitution matrix to use for the alignment, default = "BLOSUM50"}
+\item{id_col}{name of the column that contains peptide id.
+Default: "id"}
 
-\item{gap_opening}{penalty for starting a gap in the pairwiseAlignment function, default = 10}
+\item{seq_col}{name of the column that contains peptide amino acid sequences.
+Default: "pep_aa"}
 
-\item{gap_extension}{penalty for extending a gap in the pairwiseAlignment function, default = 4}
+\item{sub_matrix}{substitution matrix to use for the alignment.
+Default = "BLOSUM62"}
 
-\item{align_type}{alignment type in the pairwiseAlignment function,
-options including "global", "local", "overlap", "global-local", and "local-global".}
+\item{gap_opening}{penalty for starting a gap,
+pass to function \code{\link[Biostrings]{pairwiseAlignment}}.
+Default = 10}
 
-\item{self_comparison}{whether alignment with self is performed, default = TRUE}
+\item{gap_extension}{penalty for extending a gap,
+pass to function \code{\link[Biostrings]{pairwiseAlignment}}.
+Default = 4}
 
-\item{full_align}{whether to keep the full alignment results as a column in the final results, default = FALSE}
+\item{align_type}{alignment type,
+pass to function \code{\link[Biostrings]{pairwiseAlignment}}.
+Options: "global", "local", "overlap", "global-local", and "local-global".
+Default: "local"}
 
-\item{other_info}{whether to keep peptide information in the output, default = TRUE}
+\item{self_comparison}{whether alignment with self is performed.
+Default = TRUE}
 
-\item{parallel_ncore}{number of cores used for internal parallel in data.table}
+\item{full_align}{whether to keep the full alignment results as a column in the final results.
+Default = FALSE}
 
-\item{output_str}{format of the output to return, options: "data.table", "data.frame", and "tibble"}
+\item{other_info}{whether to keep peptide information in the output.
+Default = TRUE}
+
+\item{parallel_ncore}{number of cores used for internal parallel in \code{data.table}.
+Default = NULL}
+
+\item{output_str}{format of the output to return.
+Options: "data.table", "data.frame", and "tibble".
+Default = "data.table"}
 }
 \value{
-a data frame/data table/tibble with sequence alignment results from all unique pairs of peptides
+a data frame or data table or tibble with sequence alignment results from all unique pairs of peptides
 }
 \description{
 perform pairwise sequence alignment for a dataset of peptides taking advantange of data.table and vectorized
