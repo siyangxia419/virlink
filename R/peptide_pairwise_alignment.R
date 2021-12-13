@@ -51,7 +51,7 @@
 #'
 peptide_pairwise_alignment <- function(peptides,
                                        id_col          = "id",
-                                       seq_col         = "pap_aa",
+                                       seq_col         = "pep_aa",
                                        sub_matrix      = "BLOSUM62",
                                        gap_opening     = 10,
                                        gap_extension   = 4,
@@ -93,9 +93,11 @@ peptide_pairwise_alignment <- function(peptides,
 
   # copy the dataset for pattern and subject
   p1 <- data.table::copy(p[, keeped_name, with = FALSE])
-  data.table::setnames(p1, names(p1), paste0("subject_", names(p1)))
+  data.table::setnames(p1, names(p1), paste0("id1_", names(p1)))
+  data.table::setnames(p1, "id1_id", "id1")
   p2 <- data.table::copy(p[, keeped_name, with = FALSE])
-  data.table::setnames(p2, names(p2), paste0("pattern_", names(p2)))
+  data.table::setnames(p2, names(p2), paste0("id2_", names(p2)))
+  data.table::setnames(p2, "id2_id", "id2")
 
   # convert peptide sequence to AAString
   p[, pep_aas := sapply(pep_aa, Biostrings::AAString)]
@@ -122,7 +124,7 @@ peptide_pairwise_alignment <- function(peptides,
       nchar          <- Biostrings::nchar(alignment)
       matches        <- Biostrings::nmatch(alignment)
       mismatches     <- Biostrings::nmismatch(alignment)
-      return(list(pattern_id     = p[id >= id_threshold, id],
+      return(list(id2            = p[id >= id_threshold, id],
                   alignment      = alignment_list,
                   string_compare = string_compare,
                   score          = score,
@@ -143,7 +145,7 @@ peptide_pairwise_alignment <- function(peptides,
       nchar          <- Biostrings::nchar(alignment)
       matches        <- Biostrings::nmatch(alignment)
       mismatches     <- Biostrings::nmismatch(alignment)
-      return(list(pattern_id     = p[id >= id_threshold, id],
+      return(list(id2            = p[id >= id_threshold, id],
                   string_compare = string_compare,
                   score          = score,
                   nchar          = nchar,
@@ -160,20 +162,20 @@ peptide_pairwise_alignment <- function(peptides,
   # 4. Clean up the alignment results ---------------------------------------
 
   # remove self alignments if needed
-  if(!self_comparison) palign <- palign[id != pattern_id,]
+  if(!self_comparison) palign <- palign[id != id2,]
 
   # add number of gaps
   palign[, ":="(gaps = stringr::str_count(string_compare, "[\\+, \\-]"))]
 
   # add useful peptide information
-  data.table::setnames(palign, old = "id", new = "subject_id")
-  palign <- palign[p1, on = "subject_id", nomatch = NULL][p2, on = "pattern_id", nomatch = NULL]
+  data.table::setnames(palign, old = "id", new = "id1")
+  palign <- palign[p1, on = "id1", nomatch = NULL][p2, on = "id2", nomatch = NULL]
 
   # set keys
-  data.table::setkey(x = palign, subject_id, pattern_id)
+  data.table::setkey(x = palign, id1, id2)
   data.table::setcolorder(x = palign,
-                          neworder = c("subject_id", "pattern_id",
-                                       "subject_pep_aa", "pattern_pep_aa",
+                          neworder = c("id1", "id2",
+                                       "id1_pep_aa", "id2_pep_aa",
                                        "string_compare",
                                        "nchar", "matches", "mismatches", "gaps", "score"))
 
