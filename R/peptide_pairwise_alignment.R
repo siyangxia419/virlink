@@ -3,19 +3,37 @@
 #' perform pairwise sequence alignment for a dataset of peptides taking advantange of data.table and vectorized
 #' pairwiseAlignment function in the package "Biostrings"
 #'
-#' @param peptides a tibble of peptides with two columns named "id" and "pep_aa"
-#' @param sub_matrix substitution matrix to use for the alignment, default = "BLOSUM50"
-#' @param gap_opening penalty for starting a gap in the pairwiseAlignment function, default = 10
-#' @param gap_extension penalty for extending a gap in the pairwiseAlignment function, default = 4
-#' @param align_type alignment type in the pairwiseAlignment function,
-#'     options including "global", "local", "overlap", "global-local", and "local-global".
-#' @param self_comparison whether alignment with self is performed, default = TRUE
-#' @param full_align whether to keep the full alignment results as a column in the final results, default = FALSE
-#' @param other_info whether to keep peptide information in the output, default = TRUE
-#' @param parallel_ncore number of cores used for internal parallel in data.table
-#' @param output_str format of the output to return, options: "data.table", "data.frame", and "tibble"
+#' @param peptides a tibble of peptide metadata with at least two columns:
+#'     peptide id and peptide amino acid sequences.
+#' @param id_col name of the column that contains peptide id.
+#'     Default: "id"
+#' @param seq_col name of the column that contains peptide amino acid sequences.
+#'     Default: "pep_aa"
+#' @param sub_matrix substitution matrix to use for the alignment.
+#'     Default = "BLOSUM62"
+#' @param gap_opening penalty for starting a gap,
+#'     pass to function \code{\link[Biostrings]{pairwiseAlignment}}.
+#'     Default = 10
+#' @param gap_extension penalty for extending a gap,
+#'     pass to function \code{\link[Biostrings]{pairwiseAlignment}}.
+#'     Default = 4
+#' @param align_type alignment type,
+#'     pass to function \code{\link[Biostrings]{pairwiseAlignment}}.
+#'     Options: "global", "local", "overlap", "global-local", and "local-global".
+#'     Default: "local"
+#' @param self_comparison whether alignment with self is performed.
+#'     Default = TRUE
+#' @param full_align whether to keep the full alignment results as a column in the final results.
+#'     Default = FALSE
+#' @param other_info whether to keep peptide information in the output.
+#'     Default = TRUE
+#' @param parallel_ncore number of cores used for internal parallel in \code{data.table}.
+#'     Default = NULL
+#' @param output_str format of the output to return.
+#'     Options: "data.table", "data.frame", and "tibble".
+#'     Default = "data.table"
 #'
-#' @return a data frame/data table/tibble with sequence alignment results from all unique pairs of peptides
+#' @return a data frame or data table or tibble with sequence alignment results from all unique pairs of peptides
 #'
 #' @author Jennifer L. Remmel, Siyang Xia \email{sxia@@hsph.harvard.edu}
 #' @seealso \code{\link[Biostrings]{pairwiseAlignment}}
@@ -32,7 +50,9 @@
 #' @import tibble
 #'
 peptide_pairwise_alignment <- function(peptides,
-                                       sub_matrix      = "BLOSUM50",
+                                       id_col          = "id",
+                                       seq_col         = "pap_aa",
+                                       sub_matrix      = "BLOSUM62",
                                        gap_opening     = 10,
                                        gap_extension   = 4,
                                        align_type      = "local",
@@ -59,8 +79,10 @@ peptide_pairwise_alignment <- function(peptides,
   # 2. Prepare the data.table -----------------------------------------------
 
   # convert the data frame to data table
-  p <- data.table::setDT(data.table::copy(peptides), key = "id")
-  data.table::key(p)
+  p <- data.table::setDT(data.table::copy(peptides))
+  data.table::setnames(p, old = id_col, new = "id")
+  data.table::setnames(p, old = seq_col, new = "pep_aa")
+  data.table::setkey(p, id)
 
   # columns to keep in the final results
   if(other_info){
