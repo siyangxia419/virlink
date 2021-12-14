@@ -82,6 +82,11 @@ peptide_pairwise_alignment <- function(peptides,
   p <- data.table::setDT(data.table::copy(peptides))
   data.table::setnames(p, old = id_col, new = "id")
   data.table::setnames(p, old = seq_col, new = "pep_aa")
+
+  # convert id to ordered factor
+  p[, id := ordered(id, levels = id)]
+
+  # set id as key
   data.table::setkey(p, id)
 
   # columns to keep in the final results
