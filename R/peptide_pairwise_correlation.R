@@ -143,54 +143,76 @@ peptide_pairwise_correlation <- function(d,
   # 1. basic messages about the analysis to perform -------------------------
 
   if(analysis_type == "correlation"){
-    message("Correlation of z-scores between each pair of epitopes.")
 
-    if(cor_method == "pearson"){
-      message("Correlation method: Pearson")
-    }else if(cor_method == "spearman"){
-      message("Correlation method: Spearman")
-    }else if(cor_method == "kendall"){
-      message("Correlation method: Kendall")
-    }else{
+    if(!(cor_method %in% c("pearson", "spearman", "kendall"))){
       stop('Invalid correlation method. Please select from "pearson", "spearman", "kendall".')
     }
 
-    if(perform_test) message("Perform statistical test")
-
   }else if(analysis_type == "cooccurrence"){
-    message("Co-occurrence (binary) analysis between each pair of epitopes.")
 
-    if(all(occ_method %in% c("jaccard", "phi", "prop"))){
-      if("jaccard" %in% occ_method){
-        message("Cooccurrence coefficient: jaccard index")
-      }
-      if("phi" %in% occ_method){
-        message("Cooccurrence coefficient: phi correlation coefficient")
-      }
-      if("prop" %in% occ_method){
-        message("Cooccurrence coefficient: mean proportion of co-occurrence given one peptide is present")
-      }
-    }else{
+    if(!(all(occ_method %in% c("jaccard", "phi", "prop")))){
       stop('Invalid cooccurrence coefficient. Please select from "jaccard", "phi", "prop", or their combination as a vector.')
     }
 
-    if(perform_test){
-      if(occ_test == "fisher"){
-        message("Perform statistical test: Fisher's exact test")
-      }else if(occ_test == "chisq"){
-        message("Perform statistical test: Chi-squared test")
-      }else{
-        stop('Invalid cooccurrence test method Please select from "fisher" or "chisq".')
-      }
+    if(perform_test & (!(occ_test %in% c("fisher", "chisq")))){
+      stop('Invalid cooccurrence test method Please select from "fisher" or "chisq".')
     }
 
   }else{
+
     stop('Invalid data type. Please select from "correlation" and "cooccurrence".')
+
   }
 
-  if(temporal_samples){
-    message("Consider multiple temporal samples of each individual")
-  }
+  # if(analysis_type == "correlation"){
+  #   message("Correlation of z-scores between each pair of epitopes.")
+  #
+  #   if(cor_method == "pearson"){
+  #     message("Correlation method: Pearson")
+  #   }else if(cor_method == "spearman"){
+  #     message("Correlation method: Spearman")
+  #   }else if(cor_method == "kendall"){
+  #     message("Correlation method: Kendall")
+  #   }else{
+  #     stop('Invalid correlation method. Please select from "pearson", "spearman", "kendall".')
+  #   }
+  #
+  #   if(perform_test) message("Perform statistical test")
+  #
+  # }else if(analysis_type == "cooccurrence"){
+  #   message("Co-occurrence (binary) analysis between each pair of epitopes.")
+  #
+  #   if(all(occ_method %in% c("jaccard", "phi", "prop"))){
+  #     if("jaccard" %in% occ_method){
+  #       message("Cooccurrence coefficient: jaccard index")
+  #     }
+  #     if("phi" %in% occ_method){
+  #       message("Cooccurrence coefficient: phi correlation coefficient")
+  #     }
+  #     if("prop" %in% occ_method){
+  #       message("Cooccurrence coefficient: mean proportion of co-occurrence given one peptide is present")
+  #     }
+  #   }else{
+  #     stop('Invalid cooccurrence coefficient. Please select from "jaccard", "phi", "prop", or their combination as a vector.')
+  #   }
+  #
+  #   if(perform_test){
+  #     if(occ_test == "fisher"){
+  #       message("Perform statistical test: Fisher's exact test")
+  #     }else if(occ_test == "chisq"){
+  #       message("Perform statistical test: Chi-squared test")
+  #     }else{
+  #       stop('Invalid cooccurrence test method Please select from "fisher" or "chisq".')
+  #     }
+  #   }
+  #
+  # }else{
+  #   stop('Invalid data type. Please select from "correlation" and "cooccurrence".')
+  # }
+  #
+  # if(temporal_samples){
+  #   message("Consider multiple temporal samples of each individual")
+  # }
 
 
 
