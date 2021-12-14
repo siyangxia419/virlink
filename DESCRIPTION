@@ -1,8 +1,8 @@
 Package: virlink
 Type: Package
 Title: VirScan cross-reactivity and correlation analysis
-Version: 0.2.2
-Date: 2021-12-01
+Version: 0.2.3
+Date: 2021-12-13
 Author: Siyang Xia, Jennifer L. Remmel
 Maintainer: Siyang Xia <sxia@hsph.harvard.edu>
 Description: Functions for examining antibody cross-reactivity in VirScan data.
