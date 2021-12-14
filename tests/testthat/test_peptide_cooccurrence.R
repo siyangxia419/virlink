@@ -30,6 +30,6 @@ test_that("output is a numeric vector, otherwise", {
 #> Test passed
 
 test_that("invalid input causes error", {
-  expect_error(peptide_cooccurrence(x = peptide_bi[, 1], y = numeric(0)))
+  expect_error(peptide_cooccurrence(x = peptide_bi[, 1], y = "a"))
 })
 #> Test passed

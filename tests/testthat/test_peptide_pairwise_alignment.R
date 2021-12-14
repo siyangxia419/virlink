@@ -8,6 +8,7 @@ test_that("input is a data frame with the first two columns being 'id' and 'pep_
   expect_error(peptide_pairwise_alignment(peptides = "NNNNNNN"))
 })
 #> Test passed
+
 test_that("output has the right dimensions and structure", {
   test_result1 <- peptide_pairwise_alignment(peptides = peptide_df,
                                              self_comparison = TRUE,
@@ -24,7 +25,7 @@ test_that("output has the right dimensions and structure", {
   expect_equal(nrow(test_result2), nrow(peptide_df) * (nrow(peptide_df) - 1) / 2)
   expect_s3_class(test_result2, "tbl_df")
 
-  expect_equal(unique(test_result1$subject_id), peptide_df$id)
-  expect_equal(unique(test_result1$pattern_id), peptide_df$id)
+  expect_equal(unique(test_result1$id1), peptide_df$id)
+  expect_equal(unique(test_result1$id2), peptide_df$id)
 })
 #> Test passed
