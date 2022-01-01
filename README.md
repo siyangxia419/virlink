@@ -9,8 +9,7 @@ This packages contains functions to calculate pairwise sequence similarity score
 if(!require(devtools)) install.packages("devtools")
 devtools::install_github(repo = "siyangxia419/virlink", 
                          ref = "main",
-                         upgrade = "never",
-                         auth_token = "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")
+                         upgrade = "never")
 }
 ```
 
